@@ -1,0 +1,376 @@
+- name: Configure Web Server
+  hosts: webservers
+  become: true
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Start and enable Apache
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+    - name: Create a custom index.html
+      copy:
+        dest: /var/www/html/index.html
+        content: "<h1>Hello from Ansible Web Server!</h1>"
+
+- name: Configure DB Server
+  hosts: dbservers
+  become: true
+  tasks:
+    - name: Install Apache
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Start and enable Apache
+      service:
+        name: httpd
+        state: started
+        enabled: true
+
+[vagrant@controller ansible-project]$ cat playbook.yml
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ cat playbook.yml
+--- -
+name: Install Apache web server
+hosts: dbservers
+become: true
+tasks: - name: Install Apache
+yum:
+name: httpd
+state: latest - name: Start Apache
+service:
+name: httpd
+state: started
+enabled: true
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: No JSON object could be decoded
+
+Syntax Error while loading YAML.
+  block sequence entries are not allowed in this context
+
+The error appears to be in '/home/vagrant/ansible-project/playbook.yml': line 5, column 8, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+become: true
+tasks: - name: Install Apache
+       ^ here
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Install Apache web server] ***************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install Apache] **************************************************************************************************************************************
+changed: [192.168.33.11]
+
+TASK [Start Apache] ****************************************************************************************************************************************
+changed: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.11              : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Install Apache web server] ***************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+changed: [192.168.33.10]
+
+TASK [Start Apache] ****************************************************************************************************************************************
+changed: [192.168.33.10]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+[WARNING]: While constructing a mapping from /home/vagrant/ansible-project/playbook.yml, line 2, column 3, found a duplicate dict key (hosts). Using last
+defined value only.
+[WARNING]: While constructing a mapping from /home/vagrant/ansible-project/playbook.yml, line 2, column 3, found a duplicate dict key (become). Using last
+defined value only.
+
+PLAY [Install Apache web server] ***************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Start Apache] ****************************************************************************************************************************************
+ok: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.11              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ ls
+hosts  playbook.yml
+[vagrant@controller ansible-project]$ vi hosts
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+PLAY [Configure DB Server] *********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install MariaDB] *************************************************************************************************************************************
+changed: [192.168.33.11]
+
+TASK [Start and enable MariaDB] ****************************************************************************************************************************
+changed: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.33.11              : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+PLAY [Configure DB Server] *********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.33.11              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+[WARNING]: While constructing a mapping from /home/vagrant/ansible-project/playbook.yml, line 2, column 3, found a duplicate dict key (tasks). Using last
+defined value only.
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+PLAY [Configure DB Server] *********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.33.11              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Create a custom index.html] **************************************************************************************************************************
+changed: [192.168.33.10]
+
+PLAY [Configure DB Server] *********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.33.11              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Download website content from GitHub Pages] **********************************************************************************************************
+ok: [192.168.33.10]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=4    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+ERROR! We were unable to read either as JSON nor YAML, these are the errors we got from each:
+JSON: No JSON object could be decoded
+
+Syntax Error while loading YAML.
+  found character that cannot start any token
+
+The error appears to be in '/home/vagrant/ansible-project/playbook.yml': line 18, column 5, but may
+be elsewhere in the file depending on the exact syntax problem.
+
+The offending line appears to be:
+
+      git:
+        repo: https://github.com/trisam3118/JenkinsProject.git
+    ^ here
+There appears to be a tab character at the start of the line.
+
+YAML does not use tabs for formatting. Tabs should be replaced with spaces.
+
+For example:
+    - name: update tooling
+      vars:
+        version: 1.2.3
+#    ^--- there is a tab there.
+
+Should be written as:
+    - name: update tooling
+      vars:
+        version: 1.2.3
+# ^--- all spaces here.
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Clone JenkinsProject from GitHub] ********************************************************************************************************************
+fatal: [192.168.33.10]: FAILED! => {"changed": false, "msg": "Failed to find required executable git in paths: /sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin"}
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=3    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Git] *****************************************************************************************************************************************
+changed: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Clone JenkinsProject from GitHub] ********************************************************************************************************************
+fatal: [192.168.33.10]: FAILED! => {"changed": false, "cmd": "/bin/git clone --origin origin https://github.com/trisam3118/JenkinsProject.git /var/www/html", "msg": "fatal: destination path '/var/www/html' already exists and is not an empty directory.", "rc": 128, "stderr": "fatal: destination path '/var/www/html' already exists and is not an empty directory.\n", "stderr_lines": ["fatal: destination path '/var/www/html' already exists and is not an empty directory."], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=4    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$ vi playbook.yml
+[vagrant@controller ansible-project]$ ansible-playbook -i hosts playbook.yml
+
+PLAY [Configure Web Server] ********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Apache] **************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Install Git] *****************************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Start and enable Apache] *****************************************************************************************************************************
+ok: [192.168.33.10]
+
+TASK [Clone JenkinsProject from GitHub] ********************************************************************************************************************
+changed: [192.168.33.10]
+
+PLAY [Configure DB Server] *********************************************************************************************************************************
+
+TASK [Gathering Facts] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Install MariaDB] *************************************************************************************************************************************
+ok: [192.168.33.11]
+
+TASK [Start and enable MariaDB] ****************************************************************************************************************************
+ok: [192.168.33.11]
+
+PLAY RECAP *************************************************************************************************************************************************
+192.168.33.10              : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+192.168.33.11              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+[vagrant@controller ansible-project]$
